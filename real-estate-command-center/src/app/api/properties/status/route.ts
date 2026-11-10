@@ -1,0 +1,2 @@
+import {NextRequest,NextResponse} from "next/server";import {updatePropertyStatus} from "@/lib/data";
+export async function PATCH(req:NextRequest){const body=await req.json().catch(()=>null);if(!body?.id||!["Available","In Token","Sold"].includes(body.status))return NextResponse.json({ok:false,error:"Invalid property status"},{status:400});const result=await updatePropertyStatus(body.id,body.status);return NextResponse.json(result,{status:result.ok?200:503});}

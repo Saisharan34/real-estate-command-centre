@@ -1,0 +1,3 @@
+import {NextRequest,NextResponse} from "next/server";import {updateVisit} from "@/lib/data";
+const reasons=["Price","Road Width","Slope/Shape","Zoning/FAR","Distance"];
+export async function PATCH(req:NextRequest){const b=await req.json().catch(()=>null);if(!b?.id||b.status!=="Rejected"||!reasons.includes(b.rejection_reason))return NextResponse.json({ok:false,error:"Invalid rejection details"},{status:400});const result=await updateVisit(b.id,{status:"Rejected",rejection_reason:b.rejection_reason,client_feedback:String(b.client_feedback??"")});return NextResponse.json(result,{status:result.ok?200:503});}
